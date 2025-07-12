@@ -1,27 +1,36 @@
 package main
 
-import "strings"
+import (
+	"fmt"
+	"unicode"
+)
 
 func tokenize(expr string) []string {
 	var tokens []string
 
-	var buffer strings.Builder
+	var buffer []rune
 
 	for _, ch := range expr {
-		if ch >= '0' && ch <= '9' {
-			buffer.WriteRune(ch)
-		} else {
-			if buffer.Len() > 0 {
-				tokens = append(tokens, buffer.String())
-				buffer.Reset()
+		switch {
+		case ch >= '0' && ch <= '9':
+			buffer = append(buffer, ch)
+		case ch == '+' || ch == '-' || ch == '*' ||
+			ch == '/' || ch == '(' || ch == ')':
+			if len(buffer) > 0 {
+				tokens = append(tokens, string(buffer))
+				buffer = buffer[:0]
 			}
-
 			tokens = append(tokens, string(ch))
+		case unicode.IsSpace(ch):
+			continue
+		default:
+			fmt.Printf("Ошибка! Символ %s является недопустимым!\n", string(ch))
+			continue
 		}
 	}
 
-	if buffer.Len() > 0 {
-		tokens = append(tokens, buffer.String())
+	if len(buffer) > 0 {
+		tokens = append(tokens, string(buffer))
 	}
 
 	return tokens

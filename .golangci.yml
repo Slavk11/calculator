@@ -194,6 +194,8 @@ linters:
       context: scope
     usetesting:
       os-temp-dir: true
+    wsl:
+      strict-append: false
   exclusions:
     generated: lax
     presets:
