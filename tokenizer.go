@@ -5,7 +5,7 @@ import (
 	"unicode"
 )
 
-func tokenize(expr string) []string {
+func tokenize(expr string) ([]string, error) {
 	var tokens []string
 
 	var buffer []rune
@@ -24,8 +24,7 @@ func tokenize(expr string) []string {
 		case unicode.IsSpace(ch):
 			continue
 		default:
-			fmt.Printf("Ошибка! Символ %s является недопустимым!\n", string(ch))
-			continue
+			return nil, fmt.Errorf("Ошибка! Символ %s является недопустимым!\n", string(ch))
 		}
 	}
 
@@ -33,5 +32,5 @@ func tokenize(expr string) []string {
 		tokens = append(tokens, string(buffer))
 	}
 
-	return tokens
+	return tokens, nil
 }

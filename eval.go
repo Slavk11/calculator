@@ -2,7 +2,7 @@ package main
 
 import "strconv"
 
-func evalPostfix(rpn []string) int {
+func evalPostfix(rpn []string) (int, error) {
 	var stack []int
 
 	for _, token := range rpn {
@@ -31,5 +31,5 @@ func evalPostfix(rpn []string) int {
 		}
 	}
 
-	return stack[0]
+	return stack[0], nil
 }

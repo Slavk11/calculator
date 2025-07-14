@@ -1,6 +1,6 @@
 package main
 
-func postfix(tokens []string, priority map[rune]int) []string {
+func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 	var output []string
 
 	var stack []string
@@ -36,5 +36,5 @@ func postfix(tokens []string, priority map[rune]int) []string {
 		output = append(output, pop(&stack))
 	}
 
-	return output
+	return output, nil
 }

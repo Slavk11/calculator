@@ -3,19 +3,20 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"os"
+	"io"
 	"strconv"
 	"strings"
 )
 
-func calculate() {
-	fmt.Println("Введите выражение: ")
-
-	scanner := bufio.NewScanner(os.Stdin)
+func calculate(reader io.Reader) (int, error) {
+	scanner := bufio.NewScanner(reader)
 	scanner.Scan()
 	expr := scanner.Text()
-	expr = strings.ReplaceAll(expr, " ", "")
-
+	expr = strings.Join(strings.Fields(expr), "")
+	tokens, err := tokenize(expr)
+	if err != nil {
+		return 0, fmt.Errorf("недопустимый символ в выражении %s", err)
+	}
 	priority := map[rune]int{
 		'+': 1,
 		'-': 1,
@@ -24,14 +25,17 @@ func calculate() {
 		'(': 0,
 	}
 
-	tokens := tokenize(expr)
-	fmt.Println("Tokens: ", tokens)
+	rpn, err := postfix(tokens, priority)
+	if err != nil {
+		return 0, fmt.Errorf("ошибка при работе с постфиксом %s", err)
+	}
 
-	rpn := postfix(tokens, priority)
-	fmt.Println("Постфикс", rpn)
+	result, err := evalPostfix(rpn)
+	if err != nil {
+		return 0, fmt.Errorf("ошибка при работе с постфиксом %s", err)
+	}
 
-	result := evalPostfix(rpn)
-	fmt.Println("Результат:", result)
+	return result, nil
 }
 
 func pop(stack *[]string) string {
