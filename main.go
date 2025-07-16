@@ -1,6 +1,7 @@
 package main
 
 import (
+	"calculator/stack"
 	"fmt"
 	"os"
 )
@@ -13,6 +14,10 @@ func main() {
 		fmt.Println("Ошибка", err)
 		os.Exit(1)
 	}
+
+	s := stack.New()
+
+	s.Push("one")
 
 	fmt.Println(result)
 }
