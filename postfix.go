@@ -1,9 +1,10 @@
 package main
 
+import "calculator/stack"
+
 func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 	var output []string
-
-	var stack []string
+	s := stack.New()
 
 	for _, token := range tokens {
 		switch {
@@ -11,29 +12,44 @@ func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 			output = append(output, token)
 
 		case token == "(":
-			stack = append(stack, token)
+			s.Push(token)
 
 		case token == ")":
-			for len(stack) > 0 && stack[len(stack)-1] != "(" {
-				output = append(output, pop(&stack))
-			}
-
-			if len(stack) > 0 && stack[len(stack)-1] == "(" {
-				stack = stack[:len(stack)-1]
+			for {
+				val, _ := s.Pop()
+				if val == "(" {
+					break
+				}
+				output = append(output, val)
 			}
 
 		default:
-			for len(stack) > 0 && stack[len(stack)-1] != "(" &&
-				priority[rune(token[0])] <= priority[rune(stack[len(stack)-1][0])] {
-				output = append(output, pop(&stack))
+			for {
+				val, err := s.Pop()
+				if err != nil {
+					break
+				}
+				if val == "(" {
+					s.Push(val)
+					break
+				}
+				if priority[rune(token[0])] <= priority[rune(val[0])] {
+					output = append(output, val)
+				} else {
+					s.Push(val)
+					break
+				}
 			}
-
-			stack = append(stack, token)
+			s.Push(token)
 		}
 	}
 
-	for len(stack) > 0 {
-		output = append(output, pop(&stack))
+	for {
+		val, err := s.Pop()
+		if err != nil {
+			break
+		}
+		output = append(output, val)
 	}
 
 	return output, nil

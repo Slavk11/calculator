@@ -38,13 +38,6 @@ func calculate(reader io.Reader) (int, error) {
 	return result, nil
 }
 
-func pop(stack *[]string) string {
-	top := (*stack)[len(*stack)-1]
-	*stack = (*stack)[:len(*stack)-1]
-
-	return top
-}
-
 func isNumber(s string) bool {
 	_, err := strconv.Atoi(s)
 	return err == nil
