@@ -195,7 +195,7 @@ linters:
     usetesting:
       os-temp-dir: true
     wsl:
-      strict-append: false
+      strict-append: true
   exclusions:
     generated: lax
     presets:
