@@ -15,7 +15,7 @@ func calculate(reader io.Reader) (int, error) {
 	expr = strings.Join(strings.Fields(expr), "")
 	tokens, err := tokenize(expr)
 	if err != nil {
-		return 0, fmt.Errorf("недопустимый символ в выражении %s", err)
+		return 0, fmt.Errorf("недопустимый символ в выражении %w", err)
 	}
 	priority := map[rune]int{
 		'+': 1,
@@ -27,12 +27,12 @@ func calculate(reader io.Reader) (int, error) {
 
 	rpn, err := postfix(tokens, priority)
 	if err != nil {
-		return 0, fmt.Errorf("ошибка при работе с постфиксом %s", err)
+		return 0, fmt.Errorf("ошибка при работе с постфиксом %w", err)
 	}
 
 	result, err := evalPostfix(rpn)
 	if err != nil {
-		return 0, fmt.Errorf("ошибка при работе с постфиксом %s", err)
+		return 0, fmt.Errorf("ошибка при работе с постфиксом %w", err)
 	}
 
 	return result, nil
