@@ -2,7 +2,7 @@ package main
 
 import "calculator/stack"
 
-func postfix(tokens []string, priority map[rune]int) []string {
+func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 	var output []string
 	s := stack.New()
 
@@ -45,5 +45,5 @@ func postfix(tokens []string, priority map[rune]int) []string {
 		output = append(output, s.Pop())
 	}
 
-	return output
+	return output, nil
 }

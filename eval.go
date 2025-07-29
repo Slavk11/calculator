@@ -1,6 +1,9 @@
 package main
 
-import "strconv"
+import (
+	"errors"
+	"strconv"
+)
 
 func evalPostfix(rpn []string) (int, error) {
 	var stack []int
@@ -24,7 +27,12 @@ func evalPostfix(rpn []string) (int, error) {
 			case "*":
 				res = a * b
 			case "/":
+				if b == 0 {
+					return 0, errors.New("division by zero")
+				}
 				res = a / b
+			default:
+				return 0, errors.New("unknown operator: " + token)
 			}
 
 			stack = append(stack, res)
