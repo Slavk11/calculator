@@ -2,7 +2,7 @@ package main
 
 import "calculator/stack"
 
-func postfix(tokens []string, priority map[rune]int) ([]string, error) {
+func postfix(tokens []string, priority map[rune]int) []string {
 	var output []string
 	s := stack.New()
 
@@ -15,8 +15,8 @@ func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 			s.Push(token)
 
 		case token == ")":
-			for {
-				val, _ := s.Pop()
+			for !s.Empty() {
+				val := s.Pop()
 				if val == "(" {
 					break
 				}
@@ -24,11 +24,8 @@ func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 			}
 
 		default:
-			for {
-				val, err := s.Pop()
-				if err != nil {
-					break
-				}
+			for !s.Empty() {
+				val := s.Pop()
 				if val == "(" {
 					s.Push(val)
 					break
@@ -44,13 +41,9 @@ func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 		}
 	}
 
-	for {
-		val, err := s.Pop()
-		if err != nil {
-			break
-		}
-		output = append(output, val)
+	for !s.Empty() {
+		output = append(output, s.Pop())
 	}
 
-	return output, nil
+	return output
 }
