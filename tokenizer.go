@@ -26,25 +26,25 @@ func tokenize(expr string) ([]string, error) {
 			prevToken = string(ch)
 
 		case ch == '(':
-			// возможная ситуация: "-(3+5)"
 			if len(buffer) > 0 {
 				tokens = append(tokens, string(buffer))
 				buffer = buffer[:0]
+			} else {
+				tokens = append(tokens, string(ch))
+				prevToken = string(ch)
 			}
-			tokens = append(tokens, string(ch))
-			prevToken = string(ch)
 
 		case ch == '-':
 			if i == 0 || prevToken == "(" || prevToken == "+" || prevToken == "-" || prevToken == "*" || prevToken == "/" {
-				// Унарный минус: добавим его в буфер числа
 				buffer = append(buffer, ch)
 			} else {
 				if len(buffer) > 0 {
 					tokens = append(tokens, string(buffer))
 					buffer = buffer[:0]
+				} else {
+					tokens = append(tokens, string(ch))
+					prevToken = string(ch)
 				}
-				tokens = append(tokens, string(ch))
-				prevToken = string(ch)
 			}
 
 		case unicode.IsSpace(ch):
