@@ -3,7 +3,6 @@ package main
 import "calculator/stack"
 
 func postfix(tokens []string, priority map[rune]int) ([]string, error) {
-
 	var output []string
 
 	s := stack.New()
@@ -22,6 +21,7 @@ func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 				if val == "(" {
 					break
 				}
+
 				output = append(output, val)
 			}
 
@@ -32,6 +32,7 @@ func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 					s.Push(val)
 					break
 				}
+
 				if priority[rune(token[0])] <= priority[rune(val[0])] {
 					output = append(output, val)
 				} else {
@@ -39,6 +40,7 @@ func postfix(tokens []string, priority map[rune]int) ([]string, error) {
 					break
 				}
 			}
+
 			s.Push(token)
 		}
 	}

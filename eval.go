@@ -30,6 +30,7 @@ func evalPostfix(rpn []string) (int, error) {
 				if b == 0 {
 					return 0, errors.New("division by zero")
 				}
+
 				res = a / b
 			default:
 				return 0, errors.New("unknown operator: " + token)

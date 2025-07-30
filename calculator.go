@@ -17,6 +17,7 @@ func calculate(reader io.Reader) (int, error) {
 	if err != nil {
 		return 0, fmt.Errorf("недопустимый символ в выражении %w", err)
 	}
+
 	priority := map[rune]int{
 		'+': 1,
 		'-': 1,

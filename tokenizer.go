@@ -21,9 +21,10 @@ func tokenize(expr string) ([]string, error) {
 			if len(buffer) > 0 {
 				tokens = append(tokens, string(buffer))
 				buffer = buffer[:0]
+			} else {
+				tokens = append(tokens, string(ch))
+				prevToken = string(ch)
 			}
-			tokens = append(tokens, string(ch))
-			prevToken = string(ch)
 
 		case ch == '(':
 			if len(buffer) > 0 {
@@ -50,7 +51,7 @@ func tokenize(expr string) ([]string, error) {
 		case unicode.IsSpace(ch):
 			continue
 		default:
-			return nil, fmt.Errorf("Ошибка! Символ %s является недопустимым!\n", string(ch))
+			return nil, fmt.Errorf("ошибка: символ %s является недопустимым", string(ch))
 		}
 	}
 

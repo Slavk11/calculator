@@ -13,6 +13,7 @@ func main() {
 		if _, writeErr := fmt.Fprintln(os.Stderr, err); writeErr != nil {
 			panic("Ошибка " + writeErr.Error())
 		}
+
 		os.Exit(1)
 	}
 
