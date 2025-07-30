@@ -2,6 +2,7 @@ package stack
 
 import (
 	"container/list"
+	"fmt"
 )
 
 type Stack struct {
@@ -23,7 +24,12 @@ func (s *Stack) Pop() string {
 	}
 	elem := s.data.Back()
 	s.data.Remove(elem)
-	return elem.Value.(string)
+
+	v, ok := elem.Value.(string)
+	if !ok {
+		panic(fmt.Sprintf("stack contains non-string value: %T", elem.Value))
+	}
+	return v
 }
 
 func (s *Stack) Empty() bool {

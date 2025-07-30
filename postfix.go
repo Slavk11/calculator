@@ -3,7 +3,9 @@ package main
 import "calculator/stack"
 
 func postfix(tokens []string, priority map[rune]int) ([]string, error) {
+
 	var output []string
+
 	s := stack.New()
 
 	for _, token := range tokens {
